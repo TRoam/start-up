@@ -1,0 +1,3 @@
+# start-up
+# npm install 
+
