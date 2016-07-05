@@ -12,7 +12,8 @@ const src     = join(root, 'src');
 const modules = join(root, 'node_modules');
 const dest    = join(root, 'dist');
 const NODE_ENV = process.env.NODE_ENV;
-const isDev = NODE_ENV === 'development';
+const isDev  = NODE_ENV === 'development';
+const isTest = NODE_ENV === 'test';
 
 //env config
 const dotenv = require('dotenv');
@@ -94,4 +95,27 @@ config.resolve.alias = {
   'utils': join(src, 'utils')
 }
 
+// config.externals = {
+//   'react/lib/ReactContext': true,
+//   'react/lib/ExecutionEnvironment': true,
+//   'react/addons': true
+// }
+if (isTest) {
+  config.externals = {
+    'react/lib/ReactContext': true,
+    'react/addons': true,
+    'react/lib/ExecutionEnvironment': true
+  }
+
+  config.plugins = config.plugins.filter(p => {
+    const name = p.constructor.toString();
+    const fnName = name.match(/^function (.*)\((.*\))/)
+
+    const idx = [
+      'DedupePlugin',
+      'UglifyJsPlugin'
+    ].indexOf(fnName[1]);
+    return idx < 0;
+  })
+}
 module.exports = config;

@@ -1,6 +1,7 @@
 // Karma configuration
 // Generated on Tue Jul 05 2016 14:00:30 GMT+0800 (CST)
 var webpackConfig = require('./webpack.config');
+var argv = require('yargs').argv;
 module.exports = function(config) {
   config.set({
 
@@ -39,8 +40,6 @@ module.exports = function(config) {
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-    },
 
 
     // test results reporter to use
@@ -73,8 +72,7 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
-
+    singleRun: !argv.watch,
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity
